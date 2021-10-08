@@ -1,5 +1,5 @@
-import type { NextPage } from 'next'
-import { Home as Component } from "~/components/pages/Home"
+import type { NextPage } from "next";
+import { Home as Component } from "~/components/pages/Home";
 
 /**
  * #33618B
@@ -7,9 +7,12 @@ import { Home as Component } from "~/components/pages/Home"
  * #96DCCC
  * #FFEEDE
  * #CD648C
+ * 
+ * Twitter
+ * #1DA1F2
  */
 const Home: NextPage = () => {
-  return <Component />
-}
+  return <Component />;
+};
 
-export default Home
+export default Home;

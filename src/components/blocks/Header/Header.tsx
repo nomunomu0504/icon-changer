@@ -9,24 +9,9 @@ export const Header: React.VFC = React.memo((): JSX.Element => {
         <Link href="/">
           <a css={styles["logoLink"]}>
             <img alt="" src="/img/logo_transparent.png" css={styles["logo"]} />
-            <h3 css={styles["logoText"]}>ImageChanger</h3>
           </a>
         </Link>
       </div>
-      <nav css={styles["navigation"]}>
-        <ul css={styles["linkContainer"]}>
-          <li>
-            <Link href="">
-              <a css={styles["link"]}>トップ</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="">
-              <a css={styles["link"]}>このサイトについて</a>
-            </Link>
-          </li>
-        </ul>
-      </nav>
     </header>
   );
 });
@@ -35,7 +20,7 @@ const styles = {
   container: css`
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     header: 56px;
     position: sticky;
     top: 0;
@@ -45,8 +30,6 @@ const styles = {
   `,
   logoContainer: css``,
   logoLink: css`
-    display: flex;
-    align-items: center;
     cursor: pointer;
   `,
   logo: css`
@@ -65,9 +48,9 @@ const styles = {
   link: css`
     cursor: pointer;
     font-weight: bold;
-    color: #33618B;
+    color: #33618b;
     &:hover {
-      color: #CD648C;
+      color: #cd648c;
     }
   `,
 };

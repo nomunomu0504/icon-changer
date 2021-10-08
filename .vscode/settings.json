@@ -1,13 +1,11 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
   "css.validate": false,
   "scss.validate": false,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true,
     "source.fixAll.stylelint": true
   },
-  "[sass]": {
-    "editor.defaultFormatter": "syler.sass-indented"
-  }
+  "colorize.languages": ["typescript", "typescriptreact"]
 }
