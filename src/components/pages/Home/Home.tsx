@@ -41,7 +41,7 @@ export const Home: React.VFC = React.memo((): JSX.Element => {
   }, []);
 
   // Twitter認証コールバック
-  const handleTwitterAuthCallback = useCallback((error, data: TwitterAuthResult) => {
+  const handleTwitterAuthCallback = useCallback((_, data: TwitterAuthResult) => {
     console.log(data);
     setTwitterOAuth(data);
   }, []);
