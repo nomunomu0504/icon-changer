@@ -7,7 +7,7 @@ import { Home as Component } from "~/components/pages/Home";
  * #96DCCC
  * #FFEEDE
  * #CD648C
- * 
+ *
  * Twitter
  * #1DA1F2
  */

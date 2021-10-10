@@ -25,6 +25,7 @@
     "react-icons": "^4.3.1",
     "react-image-crop": "^9.0.4",
     "react-loading": "^2.0.3",
+    "react-query": "^3.26.0",
     "react-social-login-buttons": "^3.5.1",
     "react-twitter-login": "^1.4.0",
     "reactjs-social-login": "^1.5.2"

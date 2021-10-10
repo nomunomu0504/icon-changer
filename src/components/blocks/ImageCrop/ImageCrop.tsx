@@ -87,7 +87,8 @@ export const ImageCrop: React.VFC<Props> = React.memo(
         canvas.height = crop.height;
         const ctx = canvas.getContext("2d")!;
 
-        console.log(imageRef,
+        console.log(
+          imageRef,
           crop.x * scaleX,
           crop.y * scaleY,
           crop.width * scaleX,
@@ -95,7 +96,8 @@ export const ImageCrop: React.VFC<Props> = React.memo(
           0,
           0,
           crop.width,
-          crop.height)
+          crop.height
+        );
         ctx.drawImage(
           imageRef,
           crop.x * scaleX,
@@ -150,12 +152,12 @@ export const ImageCrop: React.VFC<Props> = React.memo(
                 </>
               ) : (
                 <>
-                <div css={hasPreview ? styles["inputContainer"] : styles["emptyPreviewInputContainer"]}>
-                  <label css={styles["inputLabel"]}>
-                    写真を選択する
-                    <input type="file" accept="image/*" onChange={handleSelectFile} css={styles["fileInput"]} />
-                  </label>
-                </div>
+                  <div css={hasPreview ? styles["inputContainer"] : styles["emptyPreviewInputContainer"]}>
+                    <label css={styles["inputLabel"]}>
+                      写真を選択する
+                      <input type="file" accept="image/*" onChange={handleSelectFile} css={styles["fileInput"]} />
+                    </label>
+                  </div>
                 </>
               )}
             </>

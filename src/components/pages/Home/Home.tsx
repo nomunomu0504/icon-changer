@@ -2,11 +2,13 @@ import { css } from "@emotion/react";
 import React, { useCallback, useMemo, useState } from "react";
 import TwitterLogin from "react-twitter-login";
 import FacebookLogin from "react-facebook-login";
-import type { ReactFacebookFailureResponse, ReactFacebookLoginInfo } from "react-facebook-login";
+import type { ReactFacebookLoginInfo } from "react-facebook-login";
 import { TwitterAuthResult } from "~/@types/TwitterAuthResult";
 import { Header } from "~/components/blocks/Header";
 import { ImageCrop } from "~/components/blocks/ImageCrop/ImageCrop";
 import { MdDone, MdFacebook } from "react-icons/md";
+import { BsInstagram } from "react-icons/bs";
+import { useUpdateTwitterProfileMutation } from "~/hooks";
 
 export const Home: React.VFC = React.memo((): JSX.Element => {
   // クロップ完了フラグ
@@ -19,10 +21,24 @@ export const Home: React.VFC = React.memo((): JSX.Element => {
   // Facebook認証情報
   const [facebookOAuth, setFacebookOAuth] = useState<ReactFacebookLoginInfo | null>(null);
 
+  // Twitter更新をTLに投稿するフラグ
+  const [isPostChangeImage, setIsPostChangeImage] = useState<boolean>(false);
+
+  // Facebookログインボタン有効化フラグ
+  // TODO: FacebookはAPIが対応していないので要調査
+  const isEnabledFacebookLoginButton = useMemo((): boolean => {
+    return false;
+  }, []);
+
   // アカウントに反映するボタン活性化フラグ
   const isEnabledApplyProfileIconButton = useMemo((): boolean => {
     return twitterOAuth !== null;
   }, [twitterOAuth]);
+
+  // Twitter更新をTLに登録するフラグ更新時
+  const handleChangePostChangeImage = useCallback((event: React.FormEvent<HTMLInputElement>) => {
+    setIsPostChangeImage(event.currentTarget.checked);
+  }, []);
 
   // Twitter認証コールバック
   const handleTwitterAuthCallback = useCallback((error, data: TwitterAuthResult) => {
@@ -48,8 +64,17 @@ export const Home: React.VFC = React.memo((): JSX.Element => {
     console.log(base64);
   }, []);
 
+  // Twitterプロファイル更新Mutation
+  const { mutateAsync: updateTwitterProfile } = useUpdateTwitterProfileMutation();
+
   // アカウントに反映するボタン押下
-  const handleClickApplyProfileIcon = useCallback(() => {}, []);
+  const handleClickApplyProfileIcon = useCallback(async () => {
+    const result = await updateTwitterProfile({
+      image: croppedImageBase64 ?? "",
+      skip_status: !isPostChangeImage
+    })
+    console.log(result);
+  }, [croppedImageBase64, isPostChangeImage, updateTwitterProfile]);
 
   return (
     <div css={styles["container"]}>
@@ -75,18 +100,37 @@ export const Home: React.VFC = React.memo((): JSX.Element => {
               consumerKey={process.env["NEXT_PUBLIC_TWITTER_API_KEY"] ?? ""}
               consumerSecret={process.env["NEXT_PUBLIC_TWITTER_API_SECRET_KEY"] ?? ""}
             />
+            <div css={styles["twitterCheckboxContainer"]}>
+              <input type="checkbox" onChange={handleChangePostChangeImage} css={styles["checkbox"]} />
+              更新をタイムラインに投稿する
+            </div>
           </div>
           <div css={styles["facebookContainer"]}>
             {facebookOAuth && <p css={styles["snsName"]}>{facebookOAuth.name}</p>}
-            <FacebookLogin
-              appId={process.env["NEXT_PUBLIC_FACEBOOK_APP_ID"] ?? ""}
-              autoLoad={true}
-              fields="name,picture"
-              scope="public_profile"
-              icon={<MdFacebook fontSize={20} />}
-              cssClass="facebook-login-button"
-              callback={handleFacebookAuthCallback}
-            />
+            {isEnabledFacebookLoginButton ? (
+              <FacebookLogin
+                appId={process.env["NEXT_PUBLIC_FACEBOOK_APP_ID"] ?? ""}
+                autoLoad={true}
+                fields="name,picture"
+                scope="public_profile"
+                icon={<MdFacebook fontSize={20} />}
+                cssClass="facebook-login-button"
+                callback={handleFacebookAuthCallback}
+              />
+            ) : (
+              <div
+                className={isEnabledFacebookLoginButton ? "facebook-login-button" : "facebook-login-button-disabled"}
+              >
+                <MdFacebook fontSize={20} />
+                今後対応予定🙇‍♂
+              </div>
+            )}
+          </div>
+          <div css={styles["instagramContainer"]}>
+            <div className="instagram-login-button-disabled">
+              <BsInstagram fontSize={20} />
+              今後対応予定🙇‍♂
+            </div>
           </div>
         </div>
         {croppedImageBase64 && (
@@ -122,7 +166,6 @@ const baseButtonStyle = css`
   line-height: 1.5;
   position: relative;
   padding: 12px 12px;
-  cursor: pointer;
   user-select: none;
   transition: all 0.3s;
   text-align: center;
@@ -131,6 +174,25 @@ const baseButtonStyle = css`
   letter-spacing: 0.1em;
   color: #212529;
   border-radius: 0.5rem;
+`;
+
+const baseFacebookButtonStyle = css`
+  display: flex;
+  align-items: center;
+  height: 46px;
+  font-family: Helvetica, sans-serif;
+  font-weight: 700;
+  -webkit-font-smoothing: antialiased;
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background-color 0.3s, border-color 0.3s;
+  padding: 0 16px;
+  border-radius: 24px;
+  svg {
+    margin-right: 12px;
+  }
 `;
 
 const styles = {
@@ -159,30 +221,32 @@ const styles = {
   twitterContainer: css`
     text-align: center;
   `,
+  twitterCheckboxContainer: css`
+    margin-top: 8px;
+  `,
+  checkbox: css`
+    margin-right: 8px;
+  `,
   snsName: css`
     font-weight: bold;
     margin-bottom: 8px;
   `,
   facebookContainer: css`
     .facebook-login-button {
-      display: flex;
-      align-items: center;
-      height: 46px;
-      font-family: Helvetica, sans-serif;
-      font-weight: 700;
-      -webkit-font-smoothing: antialiased;
-      color: #fff;
+      ${baseFacebookButtonStyle}
+
       cursor: pointer;
-      text-decoration: none;
-      text-transform: uppercase;
-      transition: background-color 0.3s, border-color 0.3s;
       background-color: #4c69ba;
-      padding: 0 16px;
-      border-radius: 24px;
-      svg {
-        margin-right: 12px;
-      }
     }
+    .facebook-login-button-disabled {
+      ${baseFacebookButtonStyle}
+      background-color: #aaaaaa;
+    }
+  `,
+  instagramContainer: css`
+    text-align: center;
+    ${baseFacebookButtonStyle}
+    background-color: #aaaaaa;
   `,
   submitButtonContainer: css`
     width: 350px;

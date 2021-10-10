@@ -1,6 +1,9 @@
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import "destyle.css";
+import { Query, QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
 
 const App: React.VFC<AppProps> = ({ Component, pageProps }): JSX.Element => {
   return (
@@ -26,7 +29,9 @@ const App: React.VFC<AppProps> = ({ Component, pageProps }): JSX.Element => {
         <link rel="icon" href="favicon.png" type="/image/vnd.microsoft.icon" />
         <title>IconChanger | プロフ画像一括変換サービス</title>
       </Head>
-      <Component {...pageProps} />
+      <QueryClientProvider client={queryClient}>
+        <Component {...pageProps} />
+      </QueryClientProvider>
     </>
   );
 };
