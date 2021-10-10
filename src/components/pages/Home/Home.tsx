@@ -5,7 +5,7 @@ import FacebookLogin from "react-facebook-login";
 import type { ReactFacebookLoginInfo } from "react-facebook-login";
 import { TwitterAuthResult } from "~/@types/TwitterAuthResult";
 import { Header } from "~/components/blocks/Header";
-import { ImageCrop } from "~/components/blocks/ImageCrop/_index";
+import { ImageCrop } from "~/components/blocks/ImageCrop/index";
 import { MdDone, MdFacebook } from "react-icons/md";
 import { BsInstagram } from "react-icons/bs";
 import { useUpdateTwitterProfileMutation } from "~/hooks";
