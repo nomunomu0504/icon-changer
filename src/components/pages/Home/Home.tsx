@@ -5,7 +5,7 @@ import FacebookLogin from "react-facebook-login";
 import type { ReactFacebookLoginInfo } from "react-facebook-login";
 import { TwitterAuthResult } from "~/@types/TwitterAuthResult";
 import { Header } from "~/components/blocks/Header";
-import { ImageCrop } from "~/components/blocks/ImageCrop/ImageCrop";
+import { ImageCrop } from "~/components/blocks/ImageCrop";
 import { MdDone, MdFacebook } from "react-icons/md";
 import { BsInstagram } from "react-icons/bs";
 import { useUpdateTwitterProfileMutation } from "~/hooks";
@@ -71,8 +71,8 @@ export const Home: React.VFC = React.memo((): JSX.Element => {
   const handleClickApplyProfileIcon = useCallback(async () => {
     const result = await updateTwitterProfile({
       image: croppedImageBase64 ?? "",
-      skip_status: !isPostChangeImage
-    })
+      skip_status: !isPostChangeImage,
+    });
     console.log(result);
   }, [croppedImageBase64, isPostChangeImage, updateTwitterProfile]);
 
