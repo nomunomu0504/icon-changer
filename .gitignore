@@ -33,3 +33,9 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# Certificates File
+certificates
+
+# docker
+docker
